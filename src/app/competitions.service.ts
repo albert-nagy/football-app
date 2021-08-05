@@ -21,11 +21,16 @@ export class CompetitionsService {
   listCompetitions(): Observable<any> {
     return this.http.get<any>(`${environment.api}/competitions/`, {'headers':this.createHeader()})
     .pipe(
-      tap(result => result.competitions.map(
+      tap(result => result.competitions
+      .map(
         competition => {
           competition.slug = slugify(`${competition.name} ${competition.area.name}`, {lower: true});
         }
       ))
     );
+  }
+
+  listMatches(competition_id: number): Observable<any> {
+    return this.http.get<any>(`${environment.api}/competitions/${competition_id}/matches`, {'headers':this.createHeader()});
   }
 }

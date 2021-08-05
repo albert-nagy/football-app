@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { CompetitionListComponent } from './competition-list/competition-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CompetitionComponent } from './competition/competition.component';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { CompetitionComponent } from './competition/competition.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

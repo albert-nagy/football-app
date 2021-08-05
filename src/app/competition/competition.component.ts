@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { CompetitionsService } from '../competitions.service';
 import { Competition } from '../models/competition.model';
+import { Match } from '../models/match.model';
 
 @Component({
   selector: 'app-competition',
@@ -11,13 +13,19 @@ import { Competition } from '../models/competition.model';
 export class CompetitionComponent implements OnInit {
   competition: Competition;
 
+  dataSource = new MatTableDataSource<Match>();
+  displayedColumns: string[] = [
+    'teams',
+    'event_time'
+  ];
+
   constructor(private activatedRoute: ActivatedRoute, private competitionsService: CompetitionsService) { }
 
   ngOnInit(): void {
+    this.dataSource.data = [];
     this.activatedRoute.data.subscribe(
       data => {
         this.getCompetition(data.competition_slug);
-        console.log(data.competition_slug);
       }
     );
   }
@@ -27,16 +35,22 @@ export class CompetitionComponent implements OnInit {
     if (!competitions.length)
       this.competitionsService.listCompetitions().subscribe(
         result => {
-          this.competitionsService.competitions.next(result.competitions);
-          this.competition = this.selectCompetition(result.competitions, slug);
+          const competition_set = result.competitions.filter(c => c.plan === 'TIER_ONE');
+          this.competitionsService.competitions.next(competition_set);
+          this.selectCompetition(competition_set, slug);
         }
       )
     else
-      this.competition = this.selectCompetition(competitions, slug);
+      this.selectCompetition(competitions, slug);
   }
 
   selectCompetition(competitions: Competition[], slug: string){
-    return competitions.find(c => c.slug == slug);
+    this.competition = competitions.find(c => c.slug == slug);
+    this.competitionsService.listMatches(this.competition.id).subscribe(
+      result => this.dataSource.data = result.matches
+    )
   }
+
+
 
 }

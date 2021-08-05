@@ -13,10 +13,20 @@ export class CompetitionListComponent implements OnInit {
   constructor(private competitionsService: CompetitionsService) { }
 
   ngOnInit(): void {
+    this.competitionsService.competitions.subscribe(
+      competitions => {
+        if (competitions.length)
+          this.competitions = competitions;
+        else
+          this.fetchCompetitions();
+      }
+    )  
+  }
+
+  fetchCompetitions() {
     this.competitionsService.listCompetitions().subscribe(
       result => {
-        this.competitions = result.competitions;
-        this.competitionsService.competitions.next(this.competitions);
+        this.competitionsService.competitions.next(result.competitions.filter(c => c.plan === 'TIER_ONE'));
       }
     );
   }
