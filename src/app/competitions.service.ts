@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Competition } from './models/competition.model';
+import slugify from 'slugify';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompetitionsService {
+  competitions = new BehaviorSubject<Competition[]>([]);
 
   constructor(private http: HttpClient) { }
 
@@ -15,6 +19,13 @@ export class CompetitionsService {
   }
 
   listCompetitions(): Observable<any> {
-    return this.http.get<any>(`${environment.api}/competitions/`, {'headers':this.createHeader()});
+    return this.http.get<any>(`${environment.api}/competitions/`, {'headers':this.createHeader()})
+    .pipe(
+      tap(result => result.competitions.map(
+        competition => {
+          competition.slug = slugify(`${competition.name} ${competition.area.name}`, {lower: true});
+        }
+      ))
+    );
   }
 }

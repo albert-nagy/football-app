@@ -14,7 +14,10 @@ export class CompetitionListComponent implements OnInit {
 
   ngOnInit(): void {
     this.competitionsService.listCompetitions().subscribe(
-      response => this.competitions = response.competitions
+      result => {
+        this.competitions = result.competitions;
+        this.competitionsService.competitions.next(this.competitions);
+      }
     );
   }
 

@@ -4,11 +4,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CompetitionListComponent } from './competition-list/competition-list.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CompetitionComponent } from './competition/competition.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CompetitionListComponent
+    CompetitionListComponent,
+    CompetitionComponent
   ],
   imports: [
     BrowserModule,
