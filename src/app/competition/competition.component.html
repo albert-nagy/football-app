@@ -13,9 +13,7 @@
         <th mat-header-cell *matHeaderCellDef>
         </th>
         <td mat-cell *matCellDef="let match">
-            <div *ngIf="match.status == 'LIVE'" class="live">LIVE</div>
-            <div *ngIf="match.status == 'IN_PLAY'" class="in-play">IN PLAY</div>
-            <div *ngIf="match.status == 'PAUSED'" class="paused">PAUSED</div>
+            <div *ngIf="match.status != 'SCHEDULED'" class="live">LIVE</div>
         </td>
     </ng-container>
 
