@@ -16,6 +16,7 @@ export class CompetitionComponent implements OnInit {
   dataSource = new MatTableDataSource<Match>();
   displayedColumns: string[] = [
     'teams',
+    'status',
     'event_time'
   ];
 
@@ -46,8 +47,9 @@ export class CompetitionComponent implements OnInit {
 
   selectCompetition(competitions: Competition[], slug: string){
     this.competition = competitions.find(c => c.slug == slug);
+    const included_states = ['SCHEDULED', 'LIVE', 'IN_PLAY', 'PAUSED'];
     this.competitionsService.listMatches(this.competition.id).subscribe(
-      result => this.dataSource.data = result.matches
+      result => this.dataSource.data = result.matches.filter(m =>  included_states.includes(m.status) )
     )
   }
 
