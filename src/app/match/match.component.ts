@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CompetitionsService } from '../competitions.service';
 import { CompetitionMatches } from '../models/competition-matches.model';
@@ -12,7 +13,7 @@ import { Match } from '../models/match.model';
   styleUrls: ['./match.component.scss']
 })
 export class MatchComponent implements OnInit, OnDestroy {
-  subscription;
+  private subscription: Subscription = new Subscription();
   slugs;
   match: Match;
   competition_matches: CompetitionMatches;
@@ -25,7 +26,7 @@ export class MatchComponent implements OnInit, OnDestroy {
       data => this.slugs = data.slugs
     );
 
-    this.subscription = this.competitionsService.competition_matches.subscribe(
+    this.subscription.add(this.competitionsService.competition_matches.subscribe(
       compMatch => {
         if (compMatch && compMatch.competition.slug == this.slugs.competition) {
           this.competition_matches = compMatch;
@@ -38,20 +39,20 @@ export class MatchComponent implements OnInit, OnDestroy {
         else
           this.getCompetition();
       }
-    );
+    ));
   }
 
   getCompetition() {
     let competitions: Competition[] = this.competitionsService.competitions.getValue();
     if (!competitions.length)
       this.competitionsService.listCompetitions().subscribe(
-        result => {
-          const today = (new Date()).getTime();
-          const competition_set = result.competitions.filter(c =>  (new Date(c.currentSeason.endDate)).getTime() >= today);
-          this.competitionsService.competitions.next(competition_set);
-          this.selectCompetition(competition_set);
-        }
-      )
+          result => {
+            const today = (new Date()).getTime();
+            const competition_set = result.competitions.filter(c =>  (new Date(c.currentSeason.endDate)).getTime() >= today);
+            this.competitionsService.competitions.next(competition_set);
+            this.selectCompetition(competition_set);
+          }
+        );
     else
       this.selectCompetition(competitions);
   }
@@ -66,7 +67,7 @@ export class MatchComponent implements OnInit, OnDestroy {
           matches: match_set
         });
       }
-    )
+    );
   }
 
   fetchMatch(match_id: number){

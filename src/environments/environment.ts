@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   api: 'http://api.football-data.org/v2',
-  included_states: ['FINISHED']
+  included_states:  ['SCHEDULED', 'LIVE', 'IN_PLAY', 'PAUSED']
 };
 
 /*

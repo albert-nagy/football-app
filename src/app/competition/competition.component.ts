@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CompetitionsService } from '../competitions.service';
+import { CompetitionMatches } from '../models/competition-matches.model';
 import { Competition } from '../models/competition.model';
 import { Match } from '../models/match.model';
 
@@ -11,9 +13,12 @@ import { Match } from '../models/match.model';
   templateUrl: './competition.component.html',
   styleUrls: ['./competition.component.scss']
 })
-export class CompetitionComponent implements OnInit {
+export class CompetitionComponent implements OnInit, OnDestroy {
+  private subscription: Subscription = new Subscription();
+  competition_slug: string;
   competition: Competition;
   empty: boolean = false;
+  
 
   dataSource = new MatTableDataSource<Match>();
   displayedColumns: string[] = [
@@ -26,13 +31,26 @@ export class CompetitionComponent implements OnInit {
   ngOnInit(): void {
     this.dataSource.data = [];
     this.activatedRoute.data.subscribe(
-      data => {
-        this.getCompetition(data.competition_slug);
-      }
+      data => this.competition_slug = data.competition_slug
     );
-  }
 
-  getCompetition(slug: string) {
+
+    this.subscription.add(this.competitionsService.competition_matches.subscribe(
+      compMatch => {
+        if (compMatch && compMatch.competition.slug == this.competition_slug) {
+          this.competition = compMatch.competition;
+          this.dataSource.data = compMatch.matches;
+          if (!this.dataSource.data.length)
+            this.empty = true;
+        }
+        else
+          this.getCompetition();
+      }
+    ));
+  }
+  
+
+  getCompetition() {
     let competitions: Competition[] = this.competitionsService.competitions.getValue();
     if (!competitions.length)
       this.competitionsService.listCompetitions().subscribe(
@@ -40,29 +58,27 @@ export class CompetitionComponent implements OnInit {
           const today = (new Date()).getTime();
           const competition_set = result.competitions.filter(c =>  (new Date(c.currentSeason.endDate)).getTime() >= today);
           this.competitionsService.competitions.next(competition_set);
-          this.selectCompetition(competition_set, slug);
+          this.selectCompetition(competition_set);
         }
       )
     else
-      this.selectCompetition(competitions, slug);
+      this.selectCompetition(competitions);
   }
 
-  selectCompetition(competitions: Competition[], slug: string){
-    this.competition = competitions.find(c => c.slug == slug);
+  selectCompetition(competitions: Competition[]){
+    this.competition = competitions.find(c => c.slug == this.competition_slug);
     this.competitionsService.listMatches(this.competition.id).subscribe(
       result => {
         const match_set = result.matches.filter(m =>  environment.included_states.includes(m.status));
-        this.dataSource.data = match_set;
         this.competitionsService.competition_matches.next({
           competition: this.competition,
           matches: match_set
         });
-        if (!this.dataSource.data.length)
-          this.empty = true;
       }
     )
   }
 
-
-
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }
