@@ -12,6 +12,7 @@ import { Match } from '../models/match.model';
 })
 export class CompetitionComponent implements OnInit {
   competition: Competition;
+  empty: boolean = false;
 
   dataSource = new MatTableDataSource<Match>();
   displayedColumns: string[] = [
@@ -49,7 +50,11 @@ export class CompetitionComponent implements OnInit {
     this.competition = competitions.find(c => c.slug == slug);
     const included_states = ['SCHEDULED', 'LIVE', 'IN_PLAY', 'PAUSED'];
     this.competitionsService.listMatches(this.competition.id).subscribe(
-      result => this.dataSource.data = result.matches.filter(m =>  included_states.includes(m.status) )
+      result => {
+        this.dataSource.data = result.matches.filter(m =>  included_states.includes(m.status) );
+        if (!this.dataSource.data.length)
+          this.empty = true;
+      }
     )
   }
 

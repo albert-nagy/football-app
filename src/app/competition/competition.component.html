@@ -1,5 +1,5 @@
 <p *ngIf="competition">{{competition.name}} | {{ competition.area.name }}</p>
-<table mat-table [dataSource]="dataSource" fxFlex="100%">
+<table *ngIf="dataSource.data.length" mat-table [dataSource]="dataSource" fxFlex="100%">
             
     <ng-container matColumnDef="teams">
         <th mat-header-cell *matHeaderCellDef>
@@ -27,3 +27,5 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+
+<p *ngIf="empty">No mathches found in this competition.</p>

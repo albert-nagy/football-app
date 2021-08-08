@@ -6,6 +6,7 @@ import { CompetitionListComponent } from './competition-list/competition-list.co
 import { HttpClientModule } from '@angular/common/http';
 import { CompetitionComponent } from './competition/competition.component';
 import { MatTableModule } from '@angular/material/table';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
