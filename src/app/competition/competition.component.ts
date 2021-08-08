@@ -37,7 +37,8 @@ export class CompetitionComponent implements OnInit {
     if (!competitions.length)
       this.competitionsService.listCompetitions().subscribe(
         result => {
-          const competition_set = result.competitions.filter(c => c.plan === 'TIER_ONE');
+          const today = (new Date()).getTime();
+          const competition_set = result.competitions.filter(c =>  (new Date(c.currentSeason.endDate)).getTime() >= today);
           this.competitionsService.competitions.next(competition_set);
           this.selectCompetition(competition_set, slug);
         }

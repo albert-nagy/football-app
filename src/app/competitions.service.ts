@@ -11,15 +11,13 @@ import slugify from 'slugify';
 })
 export class CompetitionsService {
   competitions = new BehaviorSubject<Competition[]>([]);
+  authHeader = {'X-Auth-Token': 'ef17495a22e4419f81b1c6756c9db20e'};
 
   constructor(private http: HttpClient) { }
-
-  createHeader(){
-    return {'X-Auth-Token': 'ef17495a22e4419f81b1c6756c9db20e'};
-  }
+  
 
   listCompetitions(): Observable<any> {
-    return this.http.get<any>(`${environment.api}/competitions/`, {'headers':this.createHeader()})
+    return this.http.get<any>(`${environment.api}/competitions/?plan=TIER_ONE`, {'headers':this.authHeader})
     .pipe(
       tap(result => result.competitions
       .map(
@@ -31,6 +29,6 @@ export class CompetitionsService {
   }
 
   listMatches(competition_id: number): Observable<any> {
-    return this.http.get<any>(`${environment.api}/competitions/${competition_id}/matches`, {'headers':this.createHeader()});
+    return this.http.get<any>(`${environment.api}/competitions/${competition_id}/matches`, {'headers':this.authHeader});
   }
 }

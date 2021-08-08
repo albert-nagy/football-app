@@ -28,7 +28,7 @@ export class CompetitionListComponent implements OnInit {
     this.competitionsService.listCompetitions().subscribe(
       result => {
         this.competitionsService.competitions.next(result.competitions.filter(
-          c => c.plan === 'TIER_ONE' && (new Date(c.currentSeason.endDate)).getTime() >= today
+          c => (new Date(c.currentSeason.endDate)).getTime() >= today
           ));
       }
     );
