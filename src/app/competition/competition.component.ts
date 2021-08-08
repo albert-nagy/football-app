@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { CompetitionsService } from '../competitions.service';
 import { Competition } from '../models/competition.model';
 import { Match } from '../models/match.model';
@@ -17,7 +18,6 @@ export class CompetitionComponent implements OnInit {
   dataSource = new MatTableDataSource<Match>();
   displayedColumns: string[] = [
     'teams',
-    'status',
     'event_time'
   ];
 
@@ -49,10 +49,14 @@ export class CompetitionComponent implements OnInit {
 
   selectCompetition(competitions: Competition[], slug: string){
     this.competition = competitions.find(c => c.slug == slug);
-    const included_states = ['SCHEDULED', 'LIVE', 'IN_PLAY', 'PAUSED'];
     this.competitionsService.listMatches(this.competition.id).subscribe(
       result => {
-        this.dataSource.data = result.matches.filter(m =>  included_states.includes(m.status) );
+        const match_set = result.matches.filter(m =>  environment.included_states.includes(m.status));
+        this.dataSource.data = match_set;
+        this.competitionsService.competition_matches.next({
+          competition: this.competition,
+          matches: match_set
+        });
         if (!this.dataSource.data.length)
           this.empty = true;
       }

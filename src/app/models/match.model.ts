@@ -4,6 +4,7 @@ export class Match {
     id: number;
     awayTeam: Team;
     homeTeam: Team;
+    slug: string;
     utcDate: Date;
     status: string;
     

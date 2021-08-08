@@ -1,0 +1,6 @@
+<p *ngIf="competition_matches && match">{{ competition_matches.competition.name }} | {{ competition_matches.competition.area.name }}</p>
+<ng-container *ngIf="match">
+    <p>{{ match.match.awayTeam.name }} - {{ match.match.homeTeam.name }}</p>
+    <p>{{ match.match.score.fullTime.awayTeam }} - {{ match.match.score.fullTime.homeTeam}}</p>
+</ng-container>
+<p *ngIf="notfound">Match not found.</p>

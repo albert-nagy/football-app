@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  api: 'http://api.football-data.org/v2'
+  api: 'http://api.football-data.org/v2',
+  included_states: ['FINISHED']
 };
 
 /*

@@ -6,19 +6,22 @@ import { CompetitionListComponent } from './competition-list/competition-list.co
 import { HttpClientModule } from '@angular/common/http';
 import { CompetitionComponent } from './competition/competition.component';
 import { MatTableModule } from '@angular/material/table';
-import { DatePipe } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatchComponent } from './match/match.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CompetitionListComponent,
-    CompetitionComponent
+    CompetitionComponent,
+    MatchComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    MatTableModule
+    MatTableModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

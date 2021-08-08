@@ -5,12 +5,14 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Competition } from './models/competition.model';
 import slugify from 'slugify';
+import { CompetitionMatches } from './models/competition-matches.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompetitionsService {
   competitions = new BehaviorSubject<Competition[]>([]);
+  competition_matches = new BehaviorSubject<CompetitionMatches>(undefined);
   authHeader = {'X-Auth-Token': 'ef17495a22e4419f81b1c6756c9db20e'};
 
   constructor(private http: HttpClient) { }
@@ -29,6 +31,18 @@ export class CompetitionsService {
   }
 
   listMatches(competition_id: number): Observable<any> {
-    return this.http.get<any>(`${environment.api}/competitions/${competition_id}/matches`, {'headers':this.authHeader});
+    return this.http.get<any>(`${environment.api}/competitions/${competition_id}/matches`, {'headers':this.authHeader})
+    .pipe(
+      tap(result => result.matches
+      .map(
+        match => {
+          match.slug = slugify(`${match.awayTeam.name} ${match.homeTeam.name}`, {lower: true});
+        }
+      ))
+    );
+  }
+
+  getMatch(match_id: number): Observable<any> {
+    return this.http.get<any>(`${environment.api}/matches/${match_id}`, {'headers':this.authHeader});
   }
 }
