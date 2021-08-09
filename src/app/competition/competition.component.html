@@ -17,32 +17,41 @@
             </div>
         </div>
     </header>
-    
-    <table *ngIf="dataSource.data.length" mat-table [dataSource]="dataSource" fxFlex="100%">
+    <main>
+        <table *ngIf="dataSource.data.length" mat-table [dataSource]="dataSource"  fxFlex="100%" fxFlex.gt-xs="75%"  fxFlex.gt-sm="60%">
                 
-        <ng-container matColumnDef="teams">
-            <th mat-header-cell *matHeaderCellDef>
-            </th>
-            <td mat-cell *matCellDef="let match" >
-                <span [routerLink]="['/' + competition.slug, match.slug]">{{ match.awayTeam.name }} - {{ match.homeTeam.name }}</span>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="event_time">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let match">
-                <span *ngIf="match.status == 'SCHEDULED'; else liveMatch">
-                    <mat-icon>schedule</mat-icon> {{ match.utcDate | date: 'yyyy.MM.dd. H:mm' }}
-                </span>
-                <ng-template #liveMatch>
-                    <div class="live">LIVE</div>
-                </ng-template>      
-            </td>
-        </ng-container>
-        
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-
-    <p *ngIf="empty">No mathches found in this competition.</p>
+            <ng-container matColumnDef="teams">
+                <th mat-header-cell *matHeaderCellDef>
+                    Live & upcoming matches
+                </th>
+                <td mat-cell *matCellDef="let match" class="teams" [routerLink]="['/' + competition.slug, match.slug]">
+                    {{ match.awayTeam.name }} <br> {{ match.homeTeam.name }}
+                </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="event_time">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let match" class="time" [routerLink]="['/' + competition.slug, match.slug]">
+                    <ng-container *ngIf="match.status == 'SCHEDULED'; else liveMatch">
+                        <div fxLayout="row" fxLayoutAlign="end center">
+                            <div fxLayout="column" fxLayoutAlign="center center">
+                                <mat-icon>schedule</mat-icon>
+                            </div>
+                            <div>
+                                {{ match.utcDate | date: 'yyyy.MM.dd.' }} <br/> {{ match.utcDate | date: 'H:mm' }}
+                            </div>                            
+                        </div>
+                    </ng-container>
+                    <ng-template #liveMatch>
+                        <div class="live">LIVE</div>
+                    </ng-template>      
+                </td>
+            </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    
+        <p *ngIf="empty">No mathches found in this competition.</p>        
+    </main>
 </div>

@@ -1,0 +1,41 @@
+@import "../../styles";
+
+td {
+    line-height: 22px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+td.time {
+    text-align: right;
+}
+
+tr.mat-row {
+    cursor: pointer;
+}
+
+tr:hover {
+    color: mat-color($base, 300);
+}
+
+td div {
+    display: inline-block;
+    text-align: center;
+    margin-left: 12px;
+}
+
+td div.live {
+    background-color: green;
+    color: white;
+    letter-spacing: 2px;
+    padding: 2px 12px;
+    border-radius: 4px;
+    margin: 0;
+}
+
+
+mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
