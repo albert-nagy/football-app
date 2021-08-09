@@ -80,7 +80,13 @@ export class MatchComponent implements OnInit, OnDestroy {
 
   fetchMatch(match_id: number){
     this.competitionsService.getMatch(match_id).subscribe(
-      match => this.match = match
+      match => {
+        this.match = match;
+        const live: string = (['LIVE', 'IN_PLAY', 'PAUSED'].includes(match.match.status)) ? 'LIVE!' : '';
+        this.competitionsService.setTitle(
+          `${live} ${match.match.awayTeam.name} - ${match.match.homeTeam.name} | ${this.competition_matches.competition.name}, ${this.competition_matches.competition.area.name}`
+          );
+      }
     );
   }
 

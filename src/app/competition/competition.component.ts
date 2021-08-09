@@ -43,6 +43,7 @@ export class CompetitionComponent implements OnInit, OnDestroy {
       compMatch => {
         if (compMatch && compMatch.competition.slug == this.competition_slug) {
           this.competition = compMatch.competition;
+          this.competitionsService.setTitle(`${compMatch.competition.name}, ${compMatch.competition.area.name}`);
           this.dataSource.data = compMatch.matches.filter(m => m.status != 'FINISHED');
           if (!this.dataSource.data.length)
             this.empty = true;

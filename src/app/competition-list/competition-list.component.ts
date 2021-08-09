@@ -15,6 +15,7 @@ export class CompetitionListComponent implements OnInit, OnDestroy {
   constructor(private competitionsService: CompetitionsService) { }
 
   ngOnInit(): void {
+    this.competitionsService.setTitle('Competitions');
     this.subscription.add(this.competitionsService.competitions.subscribe(
       competitions => {
         if (competitions.length)
