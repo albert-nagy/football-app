@@ -40,7 +40,7 @@ export class CompetitionsService {
       tap(result => result.matches
       .map(
         match => {
-          match.slug = slugify(`${match.awayTeam.name} ${match.homeTeam.name}`, {lower: true});
+          match.slug = slugify(`${match.awayTeam.name} vs ${match.homeTeam.name}`, {lower: true});
         }
       ))
     );
