@@ -1,7 +1,8 @@
 <div class="wrapper" fxLayout="column"  *ngIf="competition_matches && match">
     <header>
         <h2>{{ competition_matches.competition.name }} / {{ competition_matches.competition.area.name }}</h2>
-        <h1>{{ match.match.awayTeam.name }} - {{ match.match.homeTeam.name }}</h1>
+        <h1 fxHide.gt-xs>{{ match.match.awayTeam.name }} -<br/>{{ match.match.homeTeam.name }}</h1>
+        <h1 fxHide.xs>{{ match.match.awayTeam.name }} - {{ match.match.homeTeam.name }}</h1>
         <div class="breadcrumb" fxLayout="column" fxLayout.gt-sm="row">
             <div class="arrow" fxLayout="row">
                 <div class="tag link" [routerLink]="['/']">Football</div>
