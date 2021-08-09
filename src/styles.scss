@@ -65,7 +65,7 @@ table {
     margin-bottom: 1.5em;
 }
 
-tr.mat-header-row {
+tr.mat-header-row, tr.header-row {
     height: 48px !important;
     border-color: mat-color($base, 800);
     border-style: solid;

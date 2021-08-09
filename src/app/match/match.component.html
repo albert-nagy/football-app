@@ -23,23 +23,77 @@
             </div>
         </div>
     </header>
-    <ng-container *ngIf="match">
-        <p>{{ match.match.awayTeam.name }} - {{ match.match.homeTeam.name }}</p>
-        <p>{{ match.match.score.fullTime.awayTeam }} - {{ match.match.score.fullTime.homeTeam}}</p>
-        <ng-container  *ngIf="match.match.status == 'LIVE' || match.match.status == 'IN_PLAY' || match.match.status == 'PAUSED'; else notLive">
-            <div class="live">LIVE</div>
-            <p *ngIf="(match.match.status == 'LIVE' || match.match.status == 'IN_PLAY') && match.match.minute != null" ><mat-icon>timer</mat-icon> {{ match.match.minute }} min</p>
-            <p *ngIf="match.match.status == 'PAUSED'; else whichHalf">HALFTIME</p>
-            <ng-template #whichHalf>
-                <p *ngIf="match.match.minute != null && match.match.minute <= 45">1ST HALF</p>
-                <p *ngIf="match.match.minute != null && match.match.minute > 45">2ND HALF</p>
+    <main>
+        <table  *ngIf="match" fxFlex="100%" fxFlex.gt-xs="75%"  fxFlex.gt-sm="60%">
+            <tr class="header-row">
+                <th colspan="2">
+                    Match details
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    {{ match.match.awayTeam.name }}
+                </td>
+                <td>
+                    {{ match.match.homeTeam.name }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span *ngIf="match.match.score.fullTime.awayTeam != null; else noScore" class="score">
+                        {{ match.match.score.fullTime.awayTeam }}
+                    </span>
+                </td>
+                <td>
+                    <span *ngIf="match.match.score.fullTime.homeTeam != null; else noScore" class="score">
+                        {{ match.match.score.fullTime.homeTeam }}
+                    </span>
+                    <ng-template #noScore>-</ng-template>
+                </td>
+            </tr>
+            <ng-container *ngIf="match.match.status == 'LIVE' || match.match.status == 'IN_PLAY' || match.match.status == 'PAUSED'; else notLive">
+                <tr>
+                    <td colspan="2">
+                        <div class="live">LIVE</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="match-clock">
+                        <span *ngIf="match.match.status == 'PAUSED'; else whichHalf">
+                            HALFTIME
+                        </span>
+                        <ng-template #whichHalf>
+                            <ng-container *ngIf="match.match.minute != null; else noMatchClock">
+                                <span>{{ match.match.minute }} MIN, </span>
+                                <span *ngIf="match.match.minute <= 45">1ST HALF</span>
+                                <span *ngIf="match.match.minute > 45">2ND HALF</span>
+                            </ng-container>
+                            <ng-template #noMatchClock>
+                              <span class="error">NO MATCH CLOCK AVAILABLE</span>
+                            </ng-template>
+                        </ng-template>
+                    </td>
+                </tr>
+            </ng-container>
+            <ng-template #notLive>
+                <tr>
+                    <td colspan="2">{{ match.match.status }}</td>
+                </tr>
             </ng-template>
-        </ng-container>
-        <ng-template #notLive>
-            <p>{{ match.match.status }}</p>
-        </ng-template>
-        <p><mat-icon>schedule</mat-icon> {{ match.match.utcDate | date: 'yyyy.MM.dd. H:mm' }}</p>
-        
-    </ng-container>
-    <p *ngIf="notfound">Match not found.</p>
+            <tr>
+                <td colspan="2">
+                    <div fxLayout="row" fxLayoutAlign="center">
+                        <div fxLayout="column" fxLayoutAlign="center" class="clock">
+                            <mat-icon>schedule</mat-icon>
+                        </div>
+                        <div>
+                            {{ match.match.utcDate | date: 'dd/MM/yyyy' }} <br/> {{ match.match.utcDate | date: 'H:mm' }}
+                        </div>                            
+                    </div>
+                </td>
+            </tr>
+        </table>
+    
+        <p *ngIf="notfound">Match not found.</p>     
+    </main>
 </div>

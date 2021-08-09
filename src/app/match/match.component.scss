@@ -1,0 +1,84 @@
+@import "../../styles";
+
+table {
+    border: 1px solid mat-color($base, 800);
+    border-collapse: collapse;
+}
+
+tr {
+    border-bottom: 1px solid mat-color($base, 800);
+    height: 48px;
+}
+
+tr:first-of-type, tr:last-of-type {
+    border-bottom: none;
+}
+
+th {
+    text-align: left;
+}
+
+td {
+    text-align: center;
+}
+
+th:first-of-type,
+td:first-of-type {
+  padding-left: 12px;
+}
+
+th:last-of-type,
+td:last-of-type {
+  padding-right: 12px;
+}
+
+.score {
+    color: #ff9f00;
+    font-weight: bold;
+}
+
+td div {
+    display: inline-block;
+    text-align: center;
+    margin-left: 12px;
+}
+
+td div.live {
+    background-color: green;
+    color: white;
+    letter-spacing: 2px;
+    padding: 2px 12px;
+    border-radius: 4px;
+    margin: 0;
+}
+
+td div.clock {
+    margin-left: -44px;
+}
+
+td.match-clock {
+    color: #61aa00;
+}
+
+.error {
+    color: #e82d2d;
+}
+
+mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+@media only screen and (min-width: 960px) {
+
+    th:first-of-type,
+    td:first-of-type {
+    padding-left: 24px;
+    }
+
+    th:last-of-type,
+    td:last-of-type {
+    padding-right: 24px;
+    }
+}

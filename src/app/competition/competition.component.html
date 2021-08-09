@@ -38,7 +38,7 @@
                                 <mat-icon>schedule</mat-icon>
                             </div>
                             <div>
-                                {{ match.utcDate | date: 'yyyy.MM.dd.' }} <br/> {{ match.utcDate | date: 'H:mm' }}
+                                {{ match.utcDate | date: 'dd/MM/yyyy' }} <br/> {{ match.utcDate | date: 'H:mm' }}
                             </div>                            
                         </div>
                     </ng-container>
@@ -52,6 +52,6 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
     
-        <p *ngIf="empty">No mathches found in this competition.</p>        
+        <p *ngIf="empty">No matches found in this competition.</p>        
     </main>
 </div>
