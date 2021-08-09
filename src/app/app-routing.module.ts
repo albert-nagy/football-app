@@ -5,6 +5,7 @@ import { CompetitionResolverService } from './competition-resolver.service';
 import { CompetitionComponent } from './competition/competition.component';
 import { MatchResolverService } from './match-resolver.service';
 import { MatchComponent } from './match/match.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,10 @@ const routes: Routes = [
     resolve: {
       competition_slug: CompetitionResolverService
     }
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent
   }
 ];
 

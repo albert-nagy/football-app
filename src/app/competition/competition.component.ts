@@ -18,6 +18,7 @@ export class CompetitionComponent implements OnInit, OnDestroy {
   competition_slug: string;
   competition: Competition;
   empty: boolean = false;
+  notfound: boolean = false;
   
 
   dataSource = new MatTableDataSource<Match>();
@@ -77,7 +78,10 @@ export class CompetitionComponent implements OnInit, OnDestroy {
 
   selectCompetition(competitions: Competition[]){
     this.competition = competitions.find(c => c.slug == this.competition_slug);
-    this.fetchMatches();
+    if (this.competition)
+      this.fetchMatches();
+    else
+      this.notfound = true;
   }
 
   fetchMatches() {

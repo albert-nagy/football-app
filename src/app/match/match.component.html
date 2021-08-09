@@ -1,5 +1,5 @@
-<div class="wrapper" fxLayout="column"  *ngIf="competition_matches">
-    <header *ngIf="match">
+<div class="wrapper" fxLayout="column"  *ngIf="competition_matches && match">
+    <header>
         <h2>{{ competition_matches.competition.name }} / {{ competition_matches.competition.area.name }}</h2>
         <h1>{{ match.match.awayTeam.name }} - {{ match.match.homeTeam.name }}</h1>
         <div class="breadcrumb" fxLayout="column" fxLayout.gt-sm="row">
@@ -93,7 +93,8 @@
                 </td>
             </tr>
         </table>
-    
-        <p *ngIf="notfound">Match not found.</p>     
     </main>
+</div>
+<div class="wrapper" fxLayout="column"  *ngIf="notfound">
+    <app-page-not-found></app-page-not-found>
 </div>

@@ -10,13 +10,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatchComponent } from './match/match.component';
 import { DatePipe } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CompetitionListComponent,
     CompetitionComponent,
-    MatchComponent
+    MatchComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
