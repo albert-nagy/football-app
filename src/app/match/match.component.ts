@@ -20,6 +20,8 @@ export class MatchComponent implements OnInit, OnDestroy {
   competition_matches: CompetitionMatches;
   notfound: boolean = false;
 
+  check_interval;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private competitionsService: CompetitionsService,
@@ -36,8 +38,13 @@ export class MatchComponent implements OnInit, OnDestroy {
         if (compMatch && compMatch.competition.slug == this.slugs.competition) {
           this.competition_matches = compMatch;
           const match = compMatch.matches.find(m => m.slug == this.slugs.match);
-          if (match)
+          if (match) {
             this.fetchMatch(match.id);
+            if (match.status != 'FINISHED')
+              this.check_interval = setInterval(() => {
+                this.fetchMatch(match.id);
+              }, 60000);
+          }
           else
             this.notfound = true;
         }
@@ -86,12 +93,16 @@ export class MatchComponent implements OnInit, OnDestroy {
         this.competitionsService.setTitle(
           `${live} ${match.match.awayTeam.name} - ${match.match.homeTeam.name} | ${this.competition_matches.competition.name}, ${this.competition_matches.competition.area.name}`
           );
+        if (this.check_interval && match.match.status == 'FINISHED')
+          clearInterval(this.check_interval);
       }
     );
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    if (this.check_interval)
+          clearInterval(this.check_interval);
   }
 
 }

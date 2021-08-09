@@ -26,6 +26,8 @@ export class CompetitionComponent implements OnInit, OnDestroy {
     'event_time'
   ];
 
+  check_interval;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private competitionsService: CompetitionsService,
@@ -47,11 +49,15 @@ export class CompetitionComponent implements OnInit, OnDestroy {
           this.dataSource.data = compMatch.matches.filter(m => m.status != 'FINISHED');
           if (!this.dataSource.data.length)
             this.empty = true;
+          
         }
         else
           this.getCompetition();
       }
     ));
+    this.check_interval = setInterval(() => {
+      this.fetchMatches();
+    }, 60000);
   }
 
   getCompetition() {
@@ -71,21 +77,29 @@ export class CompetitionComponent implements OnInit, OnDestroy {
 
   selectCompetition(competitions: Competition[]){
     this.competition = competitions.find(c => c.slug == this.competition_slug);
-    const today = this.datePipe.transform(new Date(), 'yyyyMMdd')
-    this.competitionsService.listMatches(this.competition.id).subscribe(
-      result => {
-        const match_set = result.matches.filter(
-          m =>  environment.included_states.includes(m.status) && this.datePipe.transform(new Date(m.utcDate), 'yyyyMMdd') >= today && m.homeTeam.name != null
-          );
-        this.competitionsService.competition_matches.next({
-          competition: this.competition,
-          matches: match_set
-        });
-      }
-    )
+    this.fetchMatches();
+  }
+
+  fetchMatches() {
+    if(this.competition) {
+      const today = this.datePipe.transform(new Date(), 'yyyyMMdd')
+      this.competitionsService.listMatches(this.competition.id).subscribe(
+        result => {
+          const match_set = result.matches.filter(
+            m =>  environment.included_states.includes(m.status) && this.datePipe.transform(new Date(m.utcDate), 'yyyyMMdd') >= today && m.homeTeam.name != null
+            );
+          this.competitionsService.competition_matches.next({
+            competition: this.competition,
+            matches: match_set
+          });
+        }
+      );
+    }
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    if (this.check_interval)
+          clearInterval(this.check_interval);
   }
 }
