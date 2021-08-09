@@ -1,3 +1,4 @@
+<p class="breadcrumb">Football</p>
 <ng-container *ngFor="let competition of competitions">
     <p [routerLink]="'/' + [competition.slug]">{{ competition.name }} | {{ competition.area.name }}</p>
 </ng-container>

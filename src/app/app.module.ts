@@ -8,6 +8,7 @@ import { CompetitionComponent } from './competition/competition.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatchComponent } from './match/match.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { MatchComponent } from './match/match.component';
     MatTableModule,
     MatIconModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

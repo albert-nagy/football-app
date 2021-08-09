@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { CompetitionsService } from '../competitions.service';
 import { Competition } from '../models/competition.model';
 
@@ -7,20 +8,21 @@ import { Competition } from '../models/competition.model';
   templateUrl: './competition-list.component.html',
   styleUrls: ['./competition-list.component.scss']
 })
-export class CompetitionListComponent implements OnInit {
+export class CompetitionListComponent implements OnInit, OnDestroy {
+  private subscription: Subscription = new Subscription();
   competitions: Competition[];
 
   constructor(private competitionsService: CompetitionsService) { }
 
   ngOnInit(): void {
-    this.competitionsService.competitions.subscribe(
+    this.subscription.add(this.competitionsService.competitions.subscribe(
       competitions => {
         if (competitions.length)
           this.competitions = competitions;
         else
           this.fetchCompetitions();
       }
-    )  
+    ));
   }
 
   fetchCompetitions() {
@@ -32,6 +34,10 @@ export class CompetitionListComponent implements OnInit {
           ));
       }
     );
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
 }

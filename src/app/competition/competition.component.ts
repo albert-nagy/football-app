@@ -1,10 +1,10 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CompetitionsService } from '../competitions.service';
-import { CompetitionMatches } from '../models/competition-matches.model';
 import { Competition } from '../models/competition.model';
 import { Match } from '../models/match.model';
 
@@ -26,7 +26,11 @@ export class CompetitionComponent implements OnInit, OnDestroy {
     'event_time'
   ];
 
-  constructor(private activatedRoute: ActivatedRoute, private competitionsService: CompetitionsService) { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private competitionsService: CompetitionsService,
+    private datePipe: DatePipe
+    ) { }
 
   ngOnInit(): void {
     this.dataSource.data = [];
@@ -39,7 +43,7 @@ export class CompetitionComponent implements OnInit, OnDestroy {
       compMatch => {
         if (compMatch && compMatch.competition.slug == this.competition_slug) {
           this.competition = compMatch.competition;
-          this.dataSource.data = compMatch.matches;
+          this.dataSource.data = compMatch.matches.filter(m => m.status != 'FINISHED');
           if (!this.dataSource.data.length)
             this.empty = true;
         }
@@ -48,7 +52,6 @@ export class CompetitionComponent implements OnInit, OnDestroy {
       }
     ));
   }
-  
 
   getCompetition() {
     let competitions: Competition[] = this.competitionsService.competitions.getValue();
@@ -67,9 +70,12 @@ export class CompetitionComponent implements OnInit, OnDestroy {
 
   selectCompetition(competitions: Competition[]){
     this.competition = competitions.find(c => c.slug == this.competition_slug);
+    const today = this.datePipe.transform(new Date(), 'yyyyMMdd')
     this.competitionsService.listMatches(this.competition.id).subscribe(
       result => {
-        const match_set = result.matches.filter(m =>  environment.included_states.includes(m.status));
+        const match_set = result.matches.filter(
+          m =>  environment.included_states.includes(m.status) && this.datePipe.transform(new Date(m.utcDate), 'yyyyMMdd') >= today && m.homeTeam.name != null
+          );
         this.competitionsService.competition_matches.next({
           competition: this.competition,
           matches: match_set

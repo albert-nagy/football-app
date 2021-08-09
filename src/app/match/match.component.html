@@ -1,6 +1,28 @@
-<p *ngIf="competition_matches && match">{{ competition_matches.competition.name }} | {{ competition_matches.competition.area.name }}</p>
-<ng-container *ngIf="match">
-    <p>{{ match.match.awayTeam.name }} - {{ match.match.homeTeam.name }}</p>
-    <p>{{ match.match.score.fullTime.awayTeam }} - {{ match.match.score.fullTime.homeTeam}}</p>
+<ng-container *ngIf="competition_matches">
+    <p class="breadcrumb">
+        <a [routerLink]="['/']">Football</a> > 
+        <a [routerLink]="['/' + competition_matches.competition.slug]">
+            {{competition_matches.competition.name}}, {{ competition_matches.competition.area.name }}
+        </a> > 
+        <span *ngIf="match">{{ match.match.awayTeam.name }} - {{ match.match.homeTeam.name }}</span></p>
+    <p>{{ competition_matches.competition.name }} | {{ competition_matches.competition.area.name }}</p>
+    <ng-container *ngIf="match">
+        <p>{{ match.match.awayTeam.name }} - {{ match.match.homeTeam.name }}</p>
+        <p>{{ match.match.score.fullTime.awayTeam }} - {{ match.match.score.fullTime.homeTeam}}</p>
+        <ng-container  *ngIf="match.match.status == 'LIVE' || match.match.status == 'IN_PLAY' || match.match.status == 'PAUSED'; else notLive">
+            <div class="live">LIVE</div>
+            <p *ngIf="(match.match.status == 'LIVE' || match.match.status == 'IN_PLAY') && match.match.minute != null" ><mat-icon>timer</mat-icon> {{ match.match.minute }} min</p>
+            <p *ngIf="match.match.status == 'PAUSED'; else whichHalf">HALFTIME</p>
+            <ng-template #whichHalf>
+                <p *ngIf="match.match.minute != null && match.match.minute <= 45">1ST HALF</p>
+                <p *ngIf="match.match.minute != null && match.match.minute > 45">2ND HALF</p>
+            </ng-template>
+        </ng-container>
+        <ng-template #notLive>
+            <p>{{ match.match.status }}</p>
+        </ng-template>
+        <p><mat-icon>schedule</mat-icon> {{ match.match.utcDate | date: 'yyyy.MM.dd. H:mm' }}</p>
+        
+    </ng-container>
+    <p *ngIf="notfound">Match not found.</p>
 </ng-container>
-<p *ngIf="notfound">Match not found.</p>

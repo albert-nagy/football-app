@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -19,7 +20,11 @@ export class MatchComponent implements OnInit, OnDestroy {
   competition_matches: CompetitionMatches;
   notfound: boolean = false;
 
-  constructor(private activatedRoute: ActivatedRoute, private competitionsService: CompetitionsService) { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private competitionsService: CompetitionsService,
+    private datePipe: DatePipe
+    ) { }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(
@@ -59,9 +64,12 @@ export class MatchComponent implements OnInit, OnDestroy {
 
   selectCompetition(competitions: Competition[]){
     const competition = competitions.find(c => c.slug == this.slugs.competition);
+    const today = this.datePipe.transform(new Date(), 'yyyyMMdd')
     this.competitionsService.listMatches(competition.id).subscribe(
       result => {
-        const match_set = result.matches.filter(m =>  environment.included_states.includes(m.status));
+        const match_set = result.matches.filter(
+          m =>  environment.included_states.includes(m.status) && this.datePipe.transform(new Date(m.utcDate), 'yyyyMMdd') >= today && m.homeTeam.name != null
+          );
         this.competitionsService.competition_matches.next({
           competition: competition,
           matches: match_set
