@@ -1,11 +1,28 @@
-<ng-container *ngIf="competition_matches">
-    <p class="breadcrumb">
-        <a [routerLink]="['/']">Football</a> > 
-        <a [routerLink]="['/' + competition_matches.competition.slug]">
-            {{competition_matches.competition.name}}, {{ competition_matches.competition.area.name }}
-        </a> > 
-        <span *ngIf="match">{{ match.match.awayTeam.name }} - {{ match.match.homeTeam.name }}</span></p>
-    <p>{{ competition_matches.competition.name }} | {{ competition_matches.competition.area.name }}</p>
+<div fxLayout="column"  *ngIf="competition_matches">
+    <header *ngIf="match">
+        <h2>{{ competition_matches.competition.name }} / {{ competition_matches.competition.area.name }}</h2>
+        <h1>{{ match.match.awayTeam.name }} - {{ match.match.homeTeam.name }}</h1>
+        <div class="breadcrumb" fxLayout="column" fxLayout.gt-sm="row">
+            <div class="arrow" fxLayout="row">
+                <div class="tag link" [routerLink]="['/']">Football</div>
+                <div class="end link" [routerLink]="['/']">
+                    <div></div>
+                </div>
+            </div>
+            <div class="arrow" fxLayout="row">
+                <div class="tag link" [routerLink]="['/' + competition_matches.competition.slug]">{{ competition_matches.competition.name }}</div>
+                <div class="end link" [routerLink]="['/' + competition_matches.competition.slug]">
+                    <div></div>
+                </div>
+            </div>
+            <div class="arrow" fxLayout="row">
+                <div class="tag">{{ match.match.awayTeam.name }} - {{ match.match.homeTeam.name }}</div>
+                <div class="end">
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </header>
     <ng-container *ngIf="match">
         <p>{{ match.match.awayTeam.name }} - {{ match.match.homeTeam.name }}</p>
         <p>{{ match.match.score.fullTime.awayTeam }} - {{ match.match.score.fullTime.homeTeam}}</p>
@@ -25,4 +42,4 @@
         
     </ng-container>
     <p *ngIf="notfound">Match not found.</p>
-</ng-container>
+</div>

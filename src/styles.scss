@@ -1,1 +1,67 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/theming';
+
+$base: mat-palette($mat-grey);
+
+
+body {
+    font-family: 'Open Sans', Arial, sans-serif;
+    background-color: mat-color($base, 900);
+    color: mat-color($base, 400);
+    font-size: 16px;
+}
+
+h2 {
+    text-transform: uppercase;
+    font-weight: 300;
+    font-size: 0.8em;
+}
+
+h1 {
+    font-weight: 300;
+    font-size: 2em;
+    text-transform: none;
+    margin: 0 0 0.8em 0;
+}
+
+h2 {
+    text-transform: uppercase;
+    font-weight: 300;
+    font-size: 0.9em;
+    margin: 1em 0 0;
+}
+
+.arrow {
+    margin-bottom: 5px;
+}
+
+.breadcrumb .tag {
+    background-color: mat-color($base, 700);
+    color: mat-color($base, 900);
+    line-height: 32px;
+    padding: 0 16px 0 8px;
+    border-radius: 3px;
+}
+
+.breadcrumb .end div {
+    width: 23.5px;
+    height: 23.5px;
+    transform: rotate(45deg);
+    margin-left: -13px;
+    margin-top: 4.5px;
+    border-radius: 3px 0 3px 3px;
+    background-color: mat-color($base, 700);
+}
+
+.link {
+    cursor: pointer;
+}
+
+@media only screen and (min-width: 960px) {
+    .breadcrumb .end {
+        margin-right: 10px;
+    }
+
+    .breadcrumb .tag {
+        padding: 0 16px;
+    }
+}

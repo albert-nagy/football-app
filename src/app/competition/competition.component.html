@@ -1,6 +1,23 @@
-<ng-container *ngIf="competition">
-    <p class="breadcrumb"><a [routerLink]="['/']">Football</a> > {{competition.name}}, {{ competition.area.name }}</p>
-    <p>{{competition.name}} | {{ competition.area.name }}</p>
+<div *ngIf="competition" fxLayout="column">
+    <header>
+        <h2>{{ competition.area.name }}</h2>
+        <h1>{{ competition.name }}</h1>
+        <div class="breadcrumb"  fxLayout="column" fxLayout.gt-sm="row">
+            <div class="arrow" fxLayout="row">
+                <div class="tag link" [routerLink]="['/']">Football</div>
+                <div class="end link" [routerLink]="['/']">
+                    <div></div>
+                </div>
+            </div>
+            <div class="arrow" fxLayout="row">
+                <div class="tag">{{competition.name}}</div>
+                <div class="end">
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
     <table *ngIf="dataSource.data.length" mat-table [dataSource]="dataSource" fxFlex="100%">
                 
         <ng-container matColumnDef="teams">
@@ -28,4 +45,4 @@
     </table>
 
     <p *ngIf="empty">No mathches found in this competition.</p>
-</ng-container>
+</div>

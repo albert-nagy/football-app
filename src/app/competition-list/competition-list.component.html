@@ -1,4 +1,16 @@
-<p class="breadcrumb">Football</p>
+<div fxLayout="column">
+    <header>
+        <h2>Football</h2>
+        <h1>Competitions</h1>
+        <div class="breadcrumb" fxLayout="row">
+            <div class="tag">Football</div>
+            <div class="end">
+                <div></div>
+            </div>
+        </div>
+    </header>
+
 <ng-container *ngFor="let competition of competitions">
     <p [routerLink]="'/' + [competition.slug]">{{ competition.name }} | {{ competition.area.name }}</p>
 </ng-container>
+</div>
