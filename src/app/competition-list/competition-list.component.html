@@ -1,4 +1,4 @@
-<div fxLayout="column">
+<div class="wrapper" fxLayout="column">
     <header>
         <h2>Football</h2>
         <h1>Competitions</h1>
@@ -9,8 +9,25 @@
             </div>
         </div>
     </header>
-
-<ng-container *ngFor="let competition of competitions">
-    <p [routerLink]="'/' + [competition.slug]">{{ competition.name }} | {{ competition.area.name }}</p>
-</ng-container>
+    <main *ngIf="dataSource.data.length">
+        <table mat-table [dataSource]="dataSource" fxFlex="100%" fxFlex.gt-xs="75%"  fxFlex.gt-sm="60%">
+       
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Available competitions</th>
+                <td mat-cell *matCellDef="let competition"  [routerLink]="'/' + [competition.slug]">
+                    {{ competition.name }}
+                </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="area">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let competition" class="area" [routerLink]="'/' + [competition.slug]">
+                    {{ competition.area.name }}     
+                </td>
+            </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </main>
 </div>

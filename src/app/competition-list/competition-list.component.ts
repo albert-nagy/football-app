@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { CompetitionsService } from '../competitions.service';
 import { Competition } from '../models/competition.model';
@@ -10,7 +11,11 @@ import { Competition } from '../models/competition.model';
 })
 export class CompetitionListComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
-  competitions: Competition[];
+  dataSource = new MatTableDataSource<Competition>();
+  displayedColumns: string[] = [
+    'name',
+    'area'
+  ];
 
   constructor(private competitionsService: CompetitionsService) { }
 
@@ -19,7 +24,7 @@ export class CompetitionListComponent implements OnInit, OnDestroy {
     this.subscription.add(this.competitionsService.competitions.subscribe(
       competitions => {
         if (competitions.length)
-          this.competitions = competitions;
+        this.dataSource.data = competitions;
         else
           this.fetchCompetitions();
       }

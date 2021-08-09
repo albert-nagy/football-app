@@ -1,0 +1,14 @@
+@import "../../styles";
+
+td.area {
+    text-align: right;
+    text-transform: uppercase;
+}
+
+tr {
+    cursor: pointer;
+}
+
+tr:hover {
+    color: mat-color($base, 300);
+}

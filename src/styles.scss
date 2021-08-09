@@ -10,6 +10,10 @@ body {
     font-size: 16px;
 }
 
+.wrapper {
+    padding: 0.5em;
+}
+
 h2 {
     text-transform: uppercase;
     font-weight: 300;
@@ -20,14 +24,14 @@ h1 {
     font-weight: 300;
     font-size: 2em;
     text-transform: none;
-    margin: 0 0 0.8em 0;
+    margin: 0 0 0.4em 0;
 }
 
 h2 {
     text-transform: uppercase;
     font-weight: 300;
     font-size: 0.9em;
-    margin: 1em 0 0;
+    margin: 0;
 }
 
 .arrow {
@@ -56,12 +60,67 @@ h2 {
     cursor: pointer;
 }
 
+table {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+}
+
+tr.mat-header-row {
+    height: 48px;
+    border-color: mat-color($base, 800);
+    border-style: solid;
+    border-width: 0 1px;
+}
+
+td, th {
+    font-size: 14px;
+    border-color: mat-color($base, 800);
+}
+
+th {
+    text-transform: uppercase;
+    background-color: mat-color($base, 800);
+    color: mat-color($base, 500);
+}
+
+th.mat-header-cell:first-of-type,
+td.mat-cell:first-of-type,
+td.mat-footer-cell:first-of-type {
+  padding-left: 12px !important;
+  border-style: solid;
+  border-width: 0 0 1px 1px;
+}
+
+th.mat-header-cell:last-of-type,
+td.mat-cell:last-of-type,
+td.mat-footer-cell:last-of-type {
+  padding-right: 12px !important;
+  border-style: solid;
+  border-width: 0 1px 1px 0;
+}
+
 @media only screen and (min-width: 960px) {
+    .wrapper {
+        padding: 1em;
+    }
+
     .breadcrumb .end {
         margin-right: 10px;
     }
 
     .breadcrumb .tag {
         padding: 0 16px;
+    }
+
+    th.mat-header-cell:first-of-type,
+    td.mat-cell:first-of-type,
+    td.mat-footer-cell:first-of-type {
+    padding-left: 24px !important;
+    }
+
+    th.mat-header-cell:last-of-type,
+    td.mat-cell:last-of-type,
+    td.mat-footer-cell:last-of-type {
+    padding-right: 24px !important;
     }
 }
